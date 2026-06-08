@@ -1,5 +1,6 @@
 # Data
 data/raw/
+date/contents/
 
 # Python
 __pycache__/
