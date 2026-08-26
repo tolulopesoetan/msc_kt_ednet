@@ -1,0 +1,41 @@
+domain:
+  id: sfla
+  name: Sets, Functions and Linear Algebra
+  module_code: UFMFL3-30-1
+  provider: University of the West of England
+  level: Year 1 undergraduate
+  evaluation_mode: cross_domain_configurability
+  taxonomy_version: v1
+pipeline:
+  seed: 42
+  split_by: learner_id
+  target_column: correct
+  padding_token: 0
+  max_sequence_length: 25
+simulation:
+  purpose: technical_execution_check_only
+  data_status: SIMULATED
+  number_of_students: 50
+  minimum_attempts: 15
+  maximum_attempts: 25
+  beta_alpha: 3
+  beta_beta: 2
+knowledge_components:
+- id: KC01
+  name: Logical equivalence and truth tables
+- id: KC02
+  name: Quantifiers and statement transformations
+- id: KC03
+  name: Set notation and membership
+- id: KC04
+  name: Set operations
+- id: KC05
+  name: Power sets and Cartesian products
+- id: KC06
+  name: Set-based proof
+- id: KC07
+  name: Mathematical induction
+- id: KC08
+  name: Function properties
+- id: KC09
+  name: Inverse and composite functions
