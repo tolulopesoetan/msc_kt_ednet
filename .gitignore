@@ -24,3 +24,7 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+.venv-platform/
+**/__pycache__/
+adaptive_learning_platform/storage/*.db
