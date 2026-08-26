@@ -1,13 +1,16 @@
-def validate_bkt_parameters(parameters):
-    required_parameters = {
-        "initial_mastery",
-        "learning_probability",
-        "guess_probability",
-        "slip_probability",
-    }
+REQUIRED_BKT_PARAMETERS = {
+    "initial_mastery",
+    "learning_probability",
+    "guess_probability",
+    "slip_probability",
+    "forget_probability",
+}
 
+
+def validate_bkt_parameters(parameters):
     missing_parameters = (
-        required_parameters - set(parameters)
+        REQUIRED_BKT_PARAMETERS
+        - set(parameters)
     )
 
     if missing_parameters:
@@ -16,13 +19,17 @@ def validate_bkt_parameters(parameters):
             f"{sorted(missing_parameters)}"
         )
 
-    for parameter_name in required_parameters:
-        parameter_value = parameters[parameter_name]
+    for parameter_name in (
+        REQUIRED_BKT_PARAMETERS
+    ):
+        parameter_value = float(
+            parameters[parameter_name]
+        )
 
-        if not 0 <= parameter_value < 1:
+        if not 0 <= parameter_value <= 1:
             raise ValueError(
-                f"{parameter_name} must be between "
-                "zero and one."
+                f"{parameter_name} must be "
+                "between zero and one."
             )
 
 
@@ -43,8 +50,13 @@ def probability_correct(
         prior_mastery
     )
 
-    guess = parameters["guess_probability"]
-    slip = parameters["slip_probability"]
+    guess = float(
+        parameters["guess_probability"]
+    )
+
+    slip = float(
+        parameters["slip_probability"]
+    )
 
     predicted_probability = (
         prior_mastery * (1 - slip)
@@ -67,32 +79,47 @@ def update_mastery(
         prior_mastery
     )
 
-    learning = parameters[
-        "learning_probability"
-    ]
-    guess = parameters[
-        "guess_probability"
-    ]
-    slip = parameters[
-        "slip_probability"
-    ]
+    learning = float(
+        parameters["learning_probability"]
+    )
+
+    guess = float(
+        parameters["guess_probability"]
+    )
+
+    slip = float(
+        parameters["slip_probability"]
+    )
+
+    forget = float(
+        parameters["forget_probability"]
+    )
 
     if correct:
         numerator = (
-            prior_mastery * (1 - slip)
+            prior_mastery
+            * (1 - slip)
         )
 
         denominator = numerator + (
-            (1 - prior_mastery) * guess
+            (1 - prior_mastery)
+            * guess
         )
     else:
         numerator = (
-            prior_mastery * slip
+            prior_mastery
+            * slip
         )
 
         denominator = numerator + (
             (1 - prior_mastery)
             * (1 - guess)
+        )
+
+    if denominator <= 0:
+        raise ValueError(
+            "The fitted BKT parameters produced "
+            "zero evidence for the observed response."
         )
 
     posterior_mastery = (
@@ -101,6 +128,7 @@ def update_mastery(
 
     updated_mastery = (
         posterior_mastery
+        * (1 - forget)
         + (1 - posterior_mastery)
         * learning
     )

@@ -57,13 +57,13 @@ def initialise_database(
 
 def load_learner_mastery(
     learner_id,
-    skill_ids,
-    initial_mastery,
+    initial_mastery_by_skill,
     database_path=DATABASE_PATH,
 ):
     mastery = {
-        skill_id: initial_mastery
-        for skill_id in skill_ids
+        skill_id: float(initial_mastery)
+        for skill_id, initial_mastery
+        in initial_mastery_by_skill.items()
     }
 
     with sqlite3.connect(
@@ -85,7 +85,6 @@ def load_learner_mastery(
             )
 
     return mastery
-
 
 def record_interaction(
     learner_id,
@@ -201,3 +200,56 @@ def load_interaction_history(
         )
 
     return history
+
+def load_all_interactions(
+    database_path=DATABASE_PATH,
+):
+    with sqlite3.connect(
+        database_path
+    ) as connection:
+        interactions = pd.read_sql_query(
+            """
+            SELECT
+                learner_id,
+                session_id,
+                timestamp,
+                interaction_position,
+                item_id,
+                skill_id,
+                selected_option,
+                correct_option,
+                actual,
+                response_time_seconds,
+                predicted_probability,
+                mastery_before,
+                mastery_after,
+                model_name
+            FROM interactions
+            ORDER BY id
+            """,
+            connection,
+        )
+
+    return interactions
+
+
+def load_all_mastery(
+    database_path=DATABASE_PATH,
+):
+    with sqlite3.connect(
+        database_path
+    ) as connection:
+        mastery = pd.read_sql_query(
+            """
+            SELECT
+                learner_id,
+                skill_id,
+                mastery,
+                updated_at
+            FROM learner_mastery
+            ORDER BY learner_id, skill_id
+            """,
+            connection,
+        )
+
+    return mastery

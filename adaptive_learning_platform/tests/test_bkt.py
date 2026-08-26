@@ -11,6 +11,7 @@ PARAMETERS = {
     "learning_probability": 0.15,
     "guess_probability": 0.20,
     "slip_probability": 0.10,
+    "forget_probability": 0.0,
 }
 
 

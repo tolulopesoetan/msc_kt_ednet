@@ -24,6 +24,13 @@ DATABASE_PATH = (
     / "sfla_learning.db"
 )
 
+BKT_PARAMETERS_PATH = (
+    PROJECT_ROOT
+    / "models"
+    / "sfla"
+    / "sfla_bkt_parameters.json"
+)
+
 ITEM_REGISTER_SHEET = "sfla_item_skill_map_v1"
 
 
@@ -37,14 +44,6 @@ SKILL_NAMES = {
     "KC07": "Mathematical induction",
     "KC08": "Function properties",
     "KC09": "Inverse and composite functions",
-}
-
-
-BKT_PARAMETERS = {
-    "initial_mastery": 0.20,
-    "learning_probability": 0.15,
-    "guess_probability": 0.20,
-    "slip_probability": 0.10,
 }
 
 

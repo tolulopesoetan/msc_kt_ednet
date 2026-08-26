@@ -1,0 +1,10 @@
+{
+  "evaluated_at_utc": "2026-08-26T12:43:50.859064+00:00",
+  "domain": "sfla",
+  "parameter_data_status": "SIMULATED",
+  "checks": 11,
+  "passed": 11,
+  "warnings": 0,
+  "failed": 0,
+  "scorecard": "results/adaptive_platform/platform_functional_scorecard.csv"
+}

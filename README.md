@@ -36,3 +36,11 @@ Phase 3: stratified analysis
 Phase 4: Cross-domain case study and demo
 
 Phase 5: Integration, revisions and submissions
+
+## SFLA adaptive learning platform
+
+A Streamlit proof-of-concept adaptive learning platform is provided in [`adaptive_learning_platform`](adaptive_learning_platform).
+
+The application loads per-skill BKT parameters exported from the SFLA cross-domain experiment, updates mastery after each response, adaptively selects questions and exports research interaction data.
+
+Installation, execution, testing and scope limitations are documented in [`adaptive_learning_platform/README.md`](adaptive_learning_platform/README.md).

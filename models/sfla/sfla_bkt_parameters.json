@@ -1,0 +1,79 @@
+{
+  "data_status": "SIMULATED",
+  "domain": "sfla",
+  "domain_name": "Sets, Functions and Linear Algebra",
+  "generated_at_utc": "2026-08-26T11:34:26.763788+00:00",
+  "model": "BKT",
+  "module_code": "UFMFL3-30-1",
+  "parameter_scope": "per_skill",
+  "schema_version": 1,
+  "skills": {
+    "KC01": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.4634242864682601,
+      "initial_mastery": 0.3965107074572684,
+      "learning_probability": 0.019102341528705963,
+      "slip_probability": 0.07172922841690625
+    },
+    "KC02": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.5188210865890626,
+      "initial_mastery": 0.12104010379595699,
+      "learning_probability": 0.2687583830045248,
+      "slip_probability": 0.05133702893683014
+    },
+    "KC03": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.40613371814387067,
+      "initial_mastery": 0.33906168690804883,
+      "learning_probability": 0.0402633261492706,
+      "slip_probability": 0.20224866280220463
+    },
+    "KC04": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.33688833470554036,
+      "initial_mastery": 0.46465079585164787,
+      "learning_probability": 0.05812552266064003,
+      "slip_probability": 0.29776089207101697
+    },
+    "KC05": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.37075973493747255,
+      "initial_mastery": 0.4996881053277876,
+      "learning_probability": 0.2065713916887543,
+      "slip_probability": 0.12887080121240466
+    },
+    "KC06": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.5206662978074753,
+      "initial_mastery": 0.15001533664177308,
+      "learning_probability": 0.35303951893867846,
+      "slip_probability": 0.10124751319073784
+    },
+    "KC07": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.3333626674000372,
+      "initial_mastery": 0.3862483922726821,
+      "learning_probability": 0.0918047048255327,
+      "slip_probability": 0.16900368982835273
+    },
+    "KC08": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.49915949901175605,
+      "initial_mastery": 0.19916411353877164,
+      "learning_probability": 0.024140272206117332,
+      "slip_probability": 0.08372193010534229
+    },
+    "KC09": {
+      "forget_probability": 0.0,
+      "guess_probability": 0.5217834296869011,
+      "initial_mastery": 0.41298461816010895,
+      "learning_probability": 0.11411529198135423,
+      "slip_probability": 0.17640050766756996
+    }
+  },
+  "taxonomy_version": "v1",
+  "training_interactions": 822,
+  "training_learners": 40,
+  "validity_interpretation": "Parameters fitted to simulated SFLA interactions for prototype execution only; not established predictive validity."
+}
