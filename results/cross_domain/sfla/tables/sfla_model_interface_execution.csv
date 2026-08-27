@@ -1,0 +1,4 @@
+model,execution_status,data_status,evaluation_target,evaluated_predictions,prediction_coverage,diagnostic_auc,target_leakage_status,validity_interpretation
+BKT,SUCCESSFUL,SIMULATED,Available simulated test interactions,207,1.0,0.6178787878787879,Learner-separated split,Technical execution check only
+DKT,SUCCESSFUL,SIMULATED,Next simulated response,197,1.0,0.585036255767963,Target skill supplied separately; same-step response excluded,Technical execution check only
+Causal SAKT,SUCCESSFUL,SIMULATED,Next simulated response,197,1.0,0.4339705559217754,Next-skill query supplied; same-step response excluded and causal attention applied,Technical execution check only

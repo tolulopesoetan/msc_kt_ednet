@@ -1,0 +1,4 @@
+Model,Probability Source,Final Test AUC,Validation-Threshold Accuracy
+BKT,Single fitted probabilistic model,0.6299678039646299,0.5786421422995461
+DKT,Mean probability across three seeds,0.6803375580920749,0.6332122948351839
+Causal SAKT,Mean probability across three seeds,0.6762490851625665,0.6378014177926592

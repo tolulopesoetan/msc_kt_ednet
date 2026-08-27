@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "exported_at_utc": "2026-08-27T12:07:09.390610+00:00",
+  "tensorflow_version": "2.21.0",
+  "domain": "sfla",
+  "data_status": "SIMULATED",
+  "validity_interpretation": "Technical execution check using simulated data; not evidence of target-domain predictive validity.",
+  "platform_roles": {
+    "adaptive_engine": "BKT",
+    "adaptive_engine_controls_recommendations": true,
+    "research_only_models": [
+      "DKT",
+      "Causal SAKT"
+    ],
+    "research_models_control_recommendations": false
+  },
+  "sequence_contract": {
+    "sequence_length": 25,
+    "maximum_completed_history": 24,
+    "padding": "pre",
+    "padding_token": 0,
+    "truncation": "pre",
+    "prediction_index": -1,
+    "current_question_response_included": false,
+    "minimum_completed_interactions": 1,
+    "target_skill_vector": "Zeros except for the final next-skill token",
+    "interaction_token_formula": "2 * zero_based_skill_index + correctness + 1"
+  },
+  "encoding": {
+    "number_of_skills": 9,
+    "interaction_vocabulary_size": 19,
+    "skill_ids": [
+      "KC01",
+      "KC02",
+      "KC03",
+      "KC04",
+      "KC05",
+      "KC06",
+      "KC07",
+      "KC08",
+      "KC09"
+    ],
+    "skill_to_zero_based_index": {
+      "KC01": 0,
+      "KC02": 1,
+      "KC03": 2,
+      "KC04": 3,
+      "KC05": 4,
+      "KC06": 5,
+      "KC07": 6,
+      "KC08": 7,
+      "KC09": 8
+    },
+    "skill_to_target_token": {
+      "KC01": 1,
+      "KC02": 2,
+      "KC03": 3,
+      "KC04": 4,
+      "KC05": 5,
+      "KC06": 6,
+      "KC07": 7,
+      "KC08": 8,
+      "KC09": 9
+    }
+  },
+  "models": {
+    "DKT": {
+      "artifact_directory": "models/sfla/sfla_dkt_savedmodel",
+      "configuration": {
+        "embedding_dimension": 64,
+        "lstm_units": 64,
+        "learning_rate": 0.001
+      },
+      "diagnostic_auc": 0.585036255767963,
+      "sha256": "e9fa2ef96b6c2d188224cb2ccb4bfffcb5d811d972ffe97739f5fcfd7af3ba30"
+    },
+    "Causal SAKT": {
+      "artifact_directory": "models/sfla/sfla_sakt_savedmodel",
+      "configuration": {
+        "embedding_dimension": 64,
+        "attention_heads": 4,
+        "feedforward_dimension": 64,
+        "learning_rate": 0.001
+      },
+      "diagnostic_auc": 0.4339705559217754,
+      "causal_attention": true,
+      "sha256": "bbda8f1dcb53eadd91cb989c6b1ab10c4e1bd7ae0e9644293ad0e1198fd75394"
+    }
+  },
+  "simulated_evaluation": {
+    "training_interactions": 822,
+    "training_learners": 40,
+    "test_interactions": 207,
+    "test_learners": 10
+  },
+  "reference_probe": {
+    "interaction_tokens": [
+      0,
+      0,
+      0,
+      0,
+      12,
+      9,
+      1,
+      12,
+      7,
+      5,
+      18,
+      3,
+      17,
+      10,
+      18,
+      18,
+      12,
+      18,
+      18,
+      6,
+      2,
+      16,
+      9,
+      15,
+      3
+    ],
+    "target_skill_tokens": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4
+    ],
+    "target_skill_id": "KC04",
+    "completed_history_length": 21,
+    "expected_dkt_probability": 0.5477073788642883,
+    "expected_sakt_probability": 0.8197991251945496
+  }
+}

@@ -1,0 +1,25 @@
+Dimension,Stratum,Model,Interactions,Learners,False Positive Rate,False Negative Rate
+Available History Stratum,Cold start (1-5 prior),BKT,14030,2815,0.1540242407735258,0.6940331987438313
+Available History Stratum,Cold start (1-5 prior),DKT,14030,2815,0.09914204003813155,0.7538507551966502
+Available History Stratum,Cold start (1-5 prior),Causal SAKT,14030,2815,0.1356393844477734,0.7065948855989233
+Available History Stratum,Early history (6-20 prior),BKT,39787,2892,0.1177347959969207,0.7278324475082881
+Available History Stratum,Early history (6-20 prior),DKT,39787,2892,0.19062740569668976,0.5587538809661632
+Available History Stratum,Early history (6-20 prior),Causal SAKT,39787,2892,0.18884719014626636,0.5626480029469031
+Available History Stratum,Developing history (21-50 prior),BKT,40589,2342,0.1737835711877739,0.6905796147602123
+Available History Stratum,Developing history (21-50 prior),DKT,40589,2342,0.35397235644454433,0.3750603308323461
+Available History Stratum,Developing history (21-50 prior),Causal SAKT,40589,2342,0.3805483762220474,0.36159010135579833
+Available History Stratum,Established history (51-100 prior),BKT,25713,903,0.21412085606378514,0.6560163154316792
+Available History Stratum,Established history (51-100 prior),DKT,25713,903,0.5080780528745279,0.28341882454730855
+Available History Stratum,Established history (51-100 prior),Causal SAKT,25713,903,0.5640998741082669,0.23515233916321612
+Available History Stratum,Experienced history (101-500 prior),BKT,58504,816,0.2733531381147734,0.5968308443038314
+Available History Stratum,Experienced history (101-500 prior),DKT,58504,816,0.5648135049747725,0.2511462047885889
+Available History Stratum,Experienced history (101-500 prior),Causal SAKT,58504,816,0.6437025510444665,0.19309864064133844
+Available History Stratum,Extensive history (501+ prior),BKT,40591,443,0.46509440787093975,0.36289599521817095
+Available History Stratum,Extensive history (501+ prior),DKT,40591,443,0.6212833682992115,0.21839509862522416
+Available History Stratum,Extensive history (501+ prior),Causal SAKT,40591,443,0.6920350141069233,0.1660938433950986
+Skill Frequency Group,Common skill (top 75%),BKT,206602,4000,0.2318610143334814,0.5976806422836753
+Skill Frequency Group,Common skill (top 75%),DKT,206602,4000,0.40229616292936143,0.3411719033931344
+Skill Frequency Group,Common skill (top 75%),Causal SAKT,206602,4000,0.4441040989548016,0.3037301351306704
+Skill Frequency Group,Rare skill (bottom 25%),BKT,12612,2931,0.2232990107005855,0.5797101449275363
+Skill Frequency Group,Rare skill (bottom 25%),DKT,12612,2931,0.4015748031496063,0.3526570048309179
+Skill Frequency Group,Rare skill (bottom 25%),Causal SAKT,12612,2931,0.4647688269735514,0.30539234887060973

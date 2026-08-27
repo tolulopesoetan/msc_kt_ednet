@@ -1,0 +1,7 @@
+Skill Frequency Group,Model,Test AUC,Evaluated Interactions
+Rare Skill (Bottom 25%),BKT,0.650829779322865,52731
+Rare Skill (Bottom 25%),DKT,0.5923029526247602,12612
+Rare Skill (Bottom 25%),SAKT,0.5845265511475713,12612
+Common Skill (Top 75%),BKT,0.6284344487700617,929802
+Common Skill (Top 75%),DKT,0.6628541445106101,206602
+Common Skill (Top 75%),SAKT,0.6603414111218442,206602

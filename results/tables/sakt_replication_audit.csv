@@ -1,0 +1,4 @@
+Evaluation,Test AUC,Test ACC,Future Information Available
+Original notebook reported result,0.94009,0.85226,Yes
+Local replication,0.8943835553441419,0.803351975694983,Yes
+Leakage-free re-evaluation,0.656547322514636,0.6400138677274262,No

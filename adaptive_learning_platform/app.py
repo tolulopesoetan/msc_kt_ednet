@@ -26,6 +26,10 @@ from src.parameter_loader import (
 from src.recommender import (
     select_next_question,
 )
+from src.research_models import (
+    load_research_models_safely,
+    predict_research_probabilities,
+)
 
 
 st.set_page_config(
@@ -41,6 +45,81 @@ def get_platform_inputs():
         load_question_bank(),
         load_bkt_parameter_artifact(),
     )
+
+
+@st.cache_resource(show_spinner=False)
+def get_research_model_bundle():
+    return load_research_models_safely()
+
+
+def generate_research_prediction(
+    enabled,
+    research_bundle,
+    research_error,
+    learner_id,
+    next_skill_id,
+):
+    """Generate optional predictions from prior responses only."""
+
+    if not enabled:
+        return {
+            "available": False,
+            "status": "disabled",
+            "reason": (
+                "Enable optional research predictions "
+                "in the sidebar to use DKT and SAKT."
+            ),
+            "dkt_probability": None,
+            "sakt_probability": None,
+            "data_status": None,
+        }
+
+    if research_bundle is None:
+        return {
+            "available": False,
+            "status": "model_unavailable",
+            "reason": (
+                research_error
+                or "The optional research models are unavailable."
+            ),
+            "dkt_probability": None,
+            "sakt_probability": None,
+            "data_status": None,
+        }
+
+    completed_history = load_interaction_history(
+        learner_id
+    )
+
+    try:
+        prediction = predict_research_probabilities(
+            bundle=research_bundle,
+            completed_history=completed_history[
+                ["skill_id", "actual"]
+            ],
+            next_skill_id=next_skill_id,
+        )
+    except Exception as error:
+        return {
+            "available": False,
+            "status": "prediction_error",
+            "reason": str(error),
+            "dkt_probability": None,
+            "sakt_probability": None,
+            "data_status": (
+                research_bundle.metadata.get(
+                    "data_status"
+                )
+            ),
+        }
+
+    prediction["status"] = (
+        "available"
+        if prediction["available"]
+        else "insufficient_history"
+    )
+
+    return prediction
 
 
 initialise_database()
@@ -138,7 +217,51 @@ with st.sidebar:
                 None
             )
 
+            st.session_state.current_research_prediction = (
+                None
+            )
+
+            st.session_state.research_prediction_key = (
+                None
+            )
+
             st.rerun()
+
+    st.divider()
+    st.subheader("Optional research predictions")
+
+    enable_research_predictions = st.toggle(
+        "Enable DKT and SAKT",
+        value=False,
+        help=(
+            "Displays research-only predictions after an "
+            "answer is submitted. BKT remains the adaptive "
+            "engine."
+        ),
+    )
+
+    if enable_research_predictions:
+        with st.spinner(
+            "Loading research models..."
+        ):
+            (
+                research_model_bundle,
+                research_model_error,
+            ) = get_research_model_bundle()
+
+        if research_model_bundle is None:
+            st.warning(
+                "Research predictions unavailable. "
+                "BKT remains operational."
+            )
+        else:
+            st.success(
+                "DKT and SAKT loaded for "
+                "research display only."
+            )
+    else:
+        research_model_bundle = None
+        research_model_error = None
 
 
 if "learner_id" not in st.session_state:
@@ -211,6 +334,14 @@ with learning_tab:
                 time.time()
             )
 
+            st.session_state.current_research_prediction = (
+                None
+            )
+
+            st.session_state.research_prediction_key = (
+                None
+            )
+
     question = (
         st.session_state.current_question
     )
@@ -233,6 +364,14 @@ with learning_tab:
                 None
             )
 
+            st.session_state.current_research_prediction = (
+                None
+            )
+
+            st.session_state.research_prediction_key = (
+                None
+            )
+
             st.rerun()
 
     else:
@@ -246,6 +385,37 @@ with learning_tab:
         mastery_before = (
             st.session_state.mastery[skill_id]
         )
+
+        research_prediction_key = (
+            st.session_state.session_id,
+            question["item_id"],
+            st.session_state.interaction_position,
+            enable_research_predictions,
+        )
+
+        if (
+            st.session_state.feedback is None
+            and st.session_state.get(
+                "research_prediction_key"
+            ) != research_prediction_key
+        ):
+            st.session_state.current_research_prediction = (
+                generate_research_prediction(
+                    enabled=enable_research_predictions,
+                    research_bundle=(
+                        research_model_bundle
+                    ),
+                    research_error=(
+                        research_model_error
+                    ),
+                    learner_id=active_learner,
+                    next_skill_id=skill_id,
+                )
+            )
+
+            st.session_state.research_prediction_key = (
+                research_prediction_key
+            )
 
         st.subheader(
             f"{skill_id}: {skill_name}"
@@ -365,6 +535,23 @@ with learning_tab:
                         "PARAMETERS"
                     )
 
+                    research_prediction = (
+                        st.session_state.get(
+                            "current_research_prediction"
+                        )
+                        or {
+                            "available": False,
+                            "status": "not_recorded",
+                            "reason": (
+                                "No optional research prediction "
+                                "was generated."
+                            ),
+                            "dkt_probability": None,
+                            "sakt_probability": None,
+                            "data_status": None,
+                        }
+                    )
+
                     record_interaction(
                         learner_id=(
                             st.session_state
@@ -397,6 +584,27 @@ with learning_tab:
                         model_name=(
                             interaction_model_name
                         ),
+                        dkt_probability=(
+                            research_prediction.get(
+                                "dkt_probability"
+                            )
+                        ),
+                        sakt_probability=(
+                            research_prediction.get(
+                                "sakt_probability"
+                            )
+                        ),
+                        research_prediction_status=(
+                            research_prediction.get(
+                                "status",
+                                "not_recorded",
+                            )
+                        ),
+                        research_data_status=(
+                            research_prediction.get(
+                                "data_status"
+                            )
+                        ),
                     )
 
                     st.session_state.mastery[
@@ -420,6 +628,9 @@ with learning_tab:
                         ),
                         "predicted_probability": (
                             predicted_probability
+                        ),
+                        "research_prediction": (
+                            research_prediction
                         ),
                     }
 
@@ -469,7 +680,7 @@ with learning_tab:
             )
 
             metric_one.metric(
-                "Predicted correctness",
+                "BKT predicted correctness",
                 f"{predicted_correctness:.1%}",
             )
 
@@ -478,6 +689,74 @@ with learning_tab:
                 f"{updated_mastery:.1%}",
                 delta=f"{mastery_change:+.1%}",
             )
+
+            research_prediction = feedback.get(
+                "research_prediction",
+                {
+                    "available": False,
+                    "reason": (
+                        "No optional research prediction "
+                        "was generated for this question."
+                    ),
+                },
+            )
+
+            with st.expander(
+                "Optional DKT and SAKT research predictions"
+            ):
+                st.caption(
+                    "These estimates were generated before the "
+                    "answer was recorded. They do not affect "
+                    "question selection or mastery updates."
+                )
+
+                if research_prediction.get(
+                    "available",
+                    False,
+                ):
+                    (
+                        bkt_column,
+                        dkt_column,
+                        sakt_column,
+                    ) = st.columns(3)
+
+                    bkt_column.metric(
+                        "BKT (adaptive)",
+                        f"{predicted_correctness:.1%}",
+                    )
+
+                    dkt_column.metric(
+                        "DKT (research)",
+                        (
+                            f"{research_prediction['dkt_probability']:.1%}"
+                        ),
+                    )
+
+                    sakt_column.metric(
+                        "SAKT (research)",
+                        (
+                            f"{research_prediction['sakt_probability']:.1%}"
+                        ),
+                    )
+
+                    st.caption(
+                        "Completed interactions used: "
+                        f"{research_prediction['completed_interactions_used']}"
+                    )
+
+                    st.warning(
+                        "DKT and SAKT were fitted using simulated "
+                        "SFLA interactions. Their outputs are "
+                        "technical research predictions, not "
+                        "validated educational recommendations."
+                    )
+                else:
+                    st.info(
+                        research_prediction.get(
+                            "reason",
+                            "Research predictions are unavailable.",
+                        )
+                    )
 
             next_button_key = (
                 "next_"
@@ -522,6 +801,14 @@ with learning_tab:
                 st.session_state.feedback = None
 
                 st.session_state.question_started_at = (
+                    None
+                )
+
+                st.session_state.current_research_prediction = (
+                    None
+                )
+
+                st.session_state.research_prediction_key = (
                     None
                 )
 
@@ -651,6 +938,7 @@ with progress_tab:
             hide_index=True,
         )
 
+
 with research_tab:
     st.subheader(
         "Research data export"
@@ -668,6 +956,34 @@ with research_tab:
 
     all_mastery = (
         load_all_mastery()
+    )
+
+    common_evaluation_table = (
+        all_interactions.dropna(
+            subset=[
+                "predicted_probability",
+                "dkt_probability",
+                "sakt_probability",
+            ]
+        )[
+            [
+                "learner_id",
+                "interaction_position",
+                "skill_id",
+                "actual",
+                "predicted_probability",
+                "dkt_probability",
+                "sakt_probability",
+            ]
+        ]
+        .rename(
+            columns={
+                "predicted_probability": (
+                    "bkt_probability"
+                )
+            }
+        )
+        .reset_index(drop=True)
     )
 
     if all_interactions.empty:
@@ -756,6 +1072,29 @@ with research_tab:
         )
 
         st.subheader(
+            "Common prediction subset"
+        )
+
+        if common_evaluation_table.empty:
+            st.info(
+                "No interaction currently has predictions "
+                "from all three models. Enable DKT and SAKT, "
+                "then complete at least two questions."
+            )
+        else:
+            st.caption(
+                "This strict like-for-like table contains only "
+                "interactions for which BKT, DKT and SAKT all "
+                "produced a probability before the response."
+            )
+
+            st.dataframe(
+                common_evaluation_table.tail(20),
+                use_container_width=True,
+                hide_index=True,
+            )
+
+        st.subheader(
             "Current mastery states"
         )
 
@@ -800,6 +1139,12 @@ with research_tab:
             .encode("utf-8")
         )
 
+        common_evaluation_csv = (
+            common_evaluation_table
+            .to_csv(index=False)
+            .encode("utf-8")
+        )
+
         export_manifest = {
             "exported_at_utc": (
                 datetime.now(
@@ -808,6 +1153,14 @@ with research_tab:
             ),
             "domain": "sfla",
             "model": "BKT",
+            "adaptive_engine": "BKT",
+            "optional_research_models": [
+                "DKT",
+                "Causal SAKT",
+            ],
+            "research_models_control_recommendations": (
+                False
+            ),
             "parameter_data_status": (
                 parameter_data_status
             ),
@@ -822,6 +1175,9 @@ with research_tab:
             ),
             "question_bank_size": int(
                 len(question_bank)
+            ),
+            "common_prediction_rows": int(
+                len(common_evaluation_table)
             ),
             "validity_interpretation": (
                 bkt_artifact[
@@ -847,7 +1203,8 @@ with research_tab:
             download_column_one,
             download_column_two,
             download_column_three,
-        ) = st.columns(3)
+            download_column_four,
+        ) = st.columns(4)
 
         download_column_one.download_button(
             label="Download interactions",
@@ -879,6 +1236,18 @@ with research_tab:
             mime="application/json",
         )
 
+        download_column_four.download_button(
+            label="Download common predictions",
+            data=common_evaluation_csv,
+            file_name=(
+                "sfla_platform_common_predictions_"
+                f"{export_timestamp}.csv"
+            ),
+            mime="text/csv",
+            disabled=common_evaluation_table.empty,
+        )
+
+
 with about_tab:
     st.subheader("About this prototype")
 
@@ -892,6 +1261,12 @@ with about_tab:
         for its associated knowledge component, and
         the recommendation engine prioritises
         lower-mastery skills.
+
+        BKT is the only adaptive engine. Optional DKT
+        and causal SAKT probabilities can be displayed
+        and exported for research comparison, but they
+        never influence question selection or mastery
+        updates.
         """
     )
 
@@ -901,7 +1276,7 @@ with about_tab:
     )
 
     validity_interpretation = bkt_artifact[
-    "validity_interpretation"
+        "validity_interpretation"
     ]
 
     st.write(

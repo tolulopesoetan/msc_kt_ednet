@@ -1,0 +1,3 @@
+Evaluation,Test AUC,Test Accuracy,Future Response Access
+Upper-triangular mask,0.9959081859734016,0.9638526736431068,Permitted
+Causal mask,0.6730960607821943,0.6490096435446642,Prevented

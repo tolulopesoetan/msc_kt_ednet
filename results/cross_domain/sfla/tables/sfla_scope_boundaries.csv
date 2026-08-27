@@ -1,0 +1,5 @@
+boundary,description,implication
+Linear-algebra coverage,Neither the 2019 nor the 2020 paper contains an eligible linear-algebra item.,"The taxonomy evaluation covers logic, sets, proof and functions only."
+Predictive validity,No real target-domain learner-response sequences were available.,The target-domain model runs demonstrate execution only.
+Simulated responses,Responses were generated from fixed learner-skill probabilities.,Diagnostic AUC values must not be used to compare model performance.
+Optional questions,The simulation treats every sampled question as attempted.,A real deployment must explicitly encode unattempted optional items.

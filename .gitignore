@@ -1,30 +1,61 @@
-# Data
-data/raw/
-date/contents/
-
-# Python
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-
-# Environments
+# Python virtual environments anywhere in the repository
 .venv/
+.venv*/
+**/.venv/
+**/.venv*/
 venv/
-.env
+**/venv/
+env/
+**/env/
+ENV/
 
-
-# Large files
-*.pt
-*.pth
-*.ckpt
-*.parquet
-*.csv
-*.zip
-
-# OS files
-.DS_Store
-Thumbs.db
-
-.venv-platform/
+# Python cache and compiled files
+__pycache__/
 **/__pycache__/
-adaptive_learning_platform/storage/*.db
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Local databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Local Streamlit files
+.streamlit/secrets.toml
+**/.streamlit/secrets.toml
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# VS Code
+.vscode/
+**/.vscode/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Raw downloaded datasets
+/data/raw/
+
+# Microsoft Word temporary lock files
+~$*.docx
+**/~$*.docx

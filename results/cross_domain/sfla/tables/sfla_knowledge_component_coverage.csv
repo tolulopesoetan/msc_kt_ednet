@@ -1,0 +1,10 @@
+skill_id,knowledge_component,2019_items,2020_items,total_items,total_marks
+KC01,Logical equivalence and truth tables,1,1,2,11
+KC02,Quantifiers and statement transformations,2,2,4,7
+KC03,Set notation and membership,2,2,4,5
+KC04,Set operations,3,2,5,6
+KC05,Power sets and Cartesian products,2,3,5,11
+KC06,Set-based proof,1,1,2,10
+KC07,Mathematical induction,1,1,2,10
+KC08,Function properties,2,2,4,9
+KC09,Inverse and composite functions,2,2,4,11

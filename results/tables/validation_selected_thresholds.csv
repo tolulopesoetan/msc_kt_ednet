@@ -1,0 +1,4 @@
+Model,Decision Threshold,Selection Data,Selection Criterion,Probability Source
+BKT,0.6714042137375336,Validation learners,Maximum Youden J,Single fitted probabilistic model
+DKT,0.5888236165046692,Validation learners,Maximum Youden J,Mean probability across three validation seeds
+Causal SAKT,0.5834112763404846,Validation learners,Maximum Youden J,Mean probability across three validation seeds

@@ -1,0 +1,23 @@
+Category,Parameter,Value
+Data,Student sample,20000
+Data,Sampling seed,42
+Data,Train/test method,GroupShuffleSplit by learner
+Data,Training learners,16000
+Data,Testing learners,4000
+Data,Primary sequence length,100
+Data,Ablation sequence length,200
+Model interface,DKT target skill,Select next-skill probability from all-skill output
+Model interface,SAKT target skill,Next-skill query with historical interaction keys/values
+Training,Final neural seeds,"42,43,44"
+Training,Maximum tuning epochs,15
+Training,Tuning patience,3
+DKT,Embedding dimension,128
+DKT,LSTM units,64
+DKT,Learning rate,0.0005
+DKT,Validation-selected threshold,0.5888236165046692
+SAKT,Embedding dimension,128
+SAKT,Attention heads,4
+SAKT,Feed-forward dimension,128
+SAKT,Learning rate,0.0005
+SAKT,Validation-selected threshold,0.5834112763404846
+BKT,Validation-selected threshold,0.6714042137375336

@@ -1,0 +1,8 @@
+File,Size (MB)
+dkt_predictions.npy,1.526
+initial_sakt_predictions.npy,1.526
+sakt_leakage_free_predictions.npy,1.526
+sakt_predictions.npy,1.526
+sakt_replication_predictions.npy,1.526
+test_users_strata.csv,0.053
+y_test_ground_truth.npy,1.526

@@ -1,0 +1,10 @@
+artifact,relative_path,size_kb
+sfla_configurability_scorecard.csv,results/cross_domain/sfla/tables/sfla_configurability_scorecard.csv,1.04
+sfla_dkt_training_history.csv,results/cross_domain/sfla/tables/sfla_dkt_training_history.csv,0.41
+sfla_exception_log.csv,results/cross_domain/sfla/tables/sfla_exception_log.csv,0.05
+sfla_interactions_simulated.csv,results/cross_domain/sfla/tables/sfla_interactions_simulated.csv,55.97
+sfla_knowledge_component_coverage.csv,results/cross_domain/sfla/tables/sfla_knowledge_component_coverage.csv,0.43
+sfla_mapping_coverage.csv,results/cross_domain/sfla/tables/sfla_mapping_coverage.csv,0.21
+sfla_model_interface_execution.csv,results/cross_domain/sfla/tables/sfla_model_interface_execution.csv,0.65
+sfla_sakt_training_history.csv,results/cross_domain/sfla/tables/sfla_sakt_training_history.csv,0.17
+sfla_scope_boundaries.csv,results/cross_domain/sfla/tables/sfla_scope_boundaries.csv,0.63

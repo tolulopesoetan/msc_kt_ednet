@@ -1,0 +1,12 @@
+check,status,result,requirement
+Question-bank readiness,PASSED,27 questions; 9 skills,At least 27 questions covering all nine skills
+BKT parameter coverage,PASSED,9 skill parameter sets,One validated parameter set for each SFLA skill
+Parameter provenance,PASSED,SIMULATED,Data status must be explicitly recorded
+BKT probability range,PASSED,9/9 valid,Every predicted probability must lie between zero and one
+BKT mastery-update range,PASSED,18/18 valid,Every updated mastery value must lie between zero and one
+Correct-versus-incorrect update ordering,PASSED,9/9 skills ordered as expected,A correct response should not produce less mastery than an incorrect response
+Weakest-skill prioritisation,PASSED,Selected KC02; weakest was KC02,The first question must target the lowest-mastery skill
+Difficulty adaptation,PASSED,Selected easy; expected easy,Question difficulty must match the mastery-threshold rule
+Skill-specific initial mastery loading,PASSED,9 skills initialised,A new learner must receive all nine fitted prior values
+Interaction and mastery persistence,PASSED,1 interaction persisted,The response and updated mastery must survive a database reload
+Research export queries,PASSED,1 interaction rows; 1 mastery rows,Interaction and mastery exports must return stored records

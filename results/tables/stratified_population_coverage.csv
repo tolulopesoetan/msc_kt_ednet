@@ -1,0 +1,9 @@
+Dimension,Stratum,Interactions,Learners,Observed Correctness Rate
+Available History Stratum,Cold start (1-5 prior),14030,2815,0.4766215253029223
+Available History Stratum,Early history (6-20 prior),39787,2892,0.47761831754090533
+Available History Stratum,Developing history (21-50 prior),40589,2342,0.5615068121904949
+Available History Stratum,Established history (51-100 prior),25713,903,0.629292575739898
+Available History Stratum,Experienced history (101-500 prior),58504,816,0.6375119649938465
+Available History Stratum,Extensive history (501+ prior),40591,443,0.6594565297726097
+Skill Frequency Group,Common skill (top 75%),206602,4000,0.5859962633469182
+Skill Frequency Group,Rare skill (bottom 25%),12612,2931,0.607278782112274

@@ -1,0 +1,9 @@
+dimension,measure,result,target,status
+Structural portability,Item and interaction schema validation,Both schemas passed with zero errors,Zero validation errors,PASSED
+Semantic portability — development,2019 items mapped to taxonomy v1,16/16 (100.0%),At least 90% coverage,PASSED
+Semantic portability — challenge,2020 items mapped without changing the frozen taxonomy,16/16 (100.0%),At least 90% coverage,PASSED
+Research-code preservation,Changes required to the existing EDNet evaluation cells,0 existing EDNet cells modified,No modification,PASSED
+Operational portability,Target-domain model interfaces executed,3/3 interfaces completed,All three interfaces,PASSED
+Leakage prevention,Learner overlap and neural same-step response exposure,0 learners overlap; same-step response excluded,Zero overlap and no same-step exposure,PASSED
+Linear-algebra coverage,Mapped assessment items covering linear algebra,0/32 items,Not applicable,BOUNDARY
+Predictive evaluation,Evaluation using real target-domain learner responses,Not performed,Not applicable,BOUNDARY

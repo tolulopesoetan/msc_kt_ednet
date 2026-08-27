@@ -37,10 +37,43 @@ def initialise_database(
                 predicted_probability REAL NOT NULL,
                 mastery_before REAL NOT NULL,
                 mastery_after REAL NOT NULL,
-                model_name TEXT NOT NULL
+                model_name TEXT NOT NULL,
+                dkt_probability REAL,
+                sakt_probability REAL,
+                research_prediction_status TEXT NOT NULL
+                    DEFAULT 'not_recorded',
+                research_data_status TEXT
             )
             """
         )
+
+        # Upgrade databases created before DKT and SAKT
+        # research predictions were introduced.
+        existing_columns = {
+            row[1]
+            for row in connection.execute(
+                "PRAGMA table_info(interactions)"
+            ).fetchall()
+        }
+
+        optional_research_columns = {
+            "dkt_probability": "REAL",
+            "sakt_probability": "REAL",
+            "research_prediction_status": (
+                "TEXT NOT NULL DEFAULT 'not_recorded'"
+            ),
+            "research_data_status": "TEXT",
+        }
+
+        for column_name, column_definition in (
+            optional_research_columns.items()
+        ):
+            if column_name not in existing_columns:
+                connection.execute(
+                    "ALTER TABLE interactions "
+                    f"ADD COLUMN {column_name} "
+                    f"{column_definition}"
+                )
 
         connection.execute(
             """
@@ -86,6 +119,7 @@ def load_learner_mastery(
 
     return mastery
 
+
 def record_interaction(
     learner_id,
     session_id,
@@ -99,6 +133,12 @@ def record_interaction(
     mastery_after,
     model_name="BKT",
     database_path=DATABASE_PATH,
+    dkt_probability=None,
+    sakt_probability=None,
+    research_prediction_status=(
+        "not_recorded"
+    ),
+    research_data_status=None,
 ):
     timestamp = datetime.now(
         timezone.utc
@@ -123,9 +163,16 @@ def record_interaction(
                 predicted_probability,
                 mastery_before,
                 mastery_after,
-                model_name
+                model_name,
+                dkt_probability,
+                sakt_probability,
+                research_prediction_status,
+                research_data_status
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?, ?
+            )
             """,
             (
                 learner_id,
@@ -142,6 +189,18 @@ def record_interaction(
                 mastery_before,
                 mastery_after,
                 model_name,
+                (
+                    None
+                    if dkt_probability is None
+                    else float(dkt_probability)
+                ),
+                (
+                    None
+                    if sakt_probability is None
+                    else float(sakt_probability)
+                ),
+                research_prediction_status,
+                research_data_status,
             ),
         )
 
@@ -190,7 +249,11 @@ def load_interaction_history(
                 mastery_before,
                 mastery_after,
                 response_time_seconds,
-                model_name
+                model_name,
+                dkt_probability,
+                sakt_probability,
+                research_prediction_status,
+                research_data_status
             FROM interactions
             WHERE learner_id = ?
             ORDER BY id
@@ -200,6 +263,7 @@ def load_interaction_history(
         )
 
     return history
+
 
 def load_all_interactions(
     database_path=DATABASE_PATH,
@@ -223,7 +287,11 @@ def load_all_interactions(
                 predicted_probability,
                 mastery_before,
                 mastery_after,
-                model_name
+                model_name,
+                dkt_probability,
+                sakt_probability,
+                research_prediction_status,
+                research_data_status
             FROM interactions
             ORDER BY id
             """,

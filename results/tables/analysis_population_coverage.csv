@@ -1,0 +1,5 @@
+Population,Interactions,Learners,Test Interaction Coverage
+All test interactions,982533,4000,1.0
+All BKT predictions,982533,4000,1.0
+All neural predictions,219214,4000,0.22311108125630386
+Strict common subset,219214,4000,0.22311108125630386
