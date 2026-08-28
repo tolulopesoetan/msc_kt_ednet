@@ -265,6 +265,117 @@ def load_interaction_history(
     return history
 
 
+def load_learner_interactions(
+    learner_id,
+    database_path=DATABASE_PATH,
+):
+    """Return export-ready interactions for one learner only."""
+
+    with sqlite3.connect(
+        database_path
+    ) as connection:
+        interactions = pd.read_sql_query(
+            """
+            SELECT
+                learner_id,
+                session_id,
+                timestamp,
+                interaction_position,
+                item_id,
+                skill_id,
+                selected_option,
+                correct_option,
+                actual,
+                response_time_seconds,
+                predicted_probability,
+                mastery_before,
+                mastery_after,
+                model_name,
+                dkt_probability,
+                sakt_probability,
+                research_prediction_status,
+                research_data_status
+            FROM interactions
+            WHERE learner_id = ?
+            ORDER BY id
+            """,
+            connection,
+            params=(learner_id,),
+        )
+
+    return interactions
+
+
+def load_session_history(
+    learner_id,
+    session_id,
+    database_path=DATABASE_PATH,
+):
+    """Return completed interactions from one learner session."""
+
+    with sqlite3.connect(
+        database_path
+    ) as connection:
+        history = pd.read_sql_query(
+            """
+            SELECT
+                learner_id,
+                session_id,
+                timestamp,
+                interaction_position,
+                item_id,
+                skill_id,
+                selected_option,
+                correct_option,
+                actual,
+                response_time_seconds,
+                predicted_probability,
+                mastery_before,
+                mastery_after,
+                model_name,
+                dkt_probability,
+                sakt_probability,
+                research_prediction_status,
+                research_data_status
+            FROM interactions
+            WHERE learner_id = ?
+              AND session_id = ?
+            ORDER BY id
+            """,
+            connection,
+            params=(learner_id, session_id),
+        )
+
+    return history
+
+
+def load_learner_mastery_table(
+    learner_id,
+    database_path=DATABASE_PATH,
+):
+    """Return persisted mastery rows for one learner only."""
+
+    with sqlite3.connect(
+        database_path
+    ) as connection:
+        mastery = pd.read_sql_query(
+            """
+            SELECT
+                learner_id,
+                skill_id,
+                mastery,
+                updated_at
+            FROM learner_mastery
+            WHERE learner_id = ?
+            ORDER BY skill_id
+            """,
+            connection,
+            params=(learner_id,),
+        )
+
+    return mastery
+
+
 def load_all_interactions(
     database_path=DATABASE_PATH,
 ):

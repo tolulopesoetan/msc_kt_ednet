@@ -5,7 +5,10 @@ from adaptive_learning_platform.src.database import (
     load_all_interactions,
     load_all_mastery,
     load_interaction_history,
+    load_learner_interactions,
     load_learner_mastery,
+    load_learner_mastery_table,
+    load_session_history,
     record_interaction,
 )
 
@@ -325,3 +328,117 @@ def test_research_exports_include_all_learners(
         "KC01",
         "KC02",
     }
+
+
+def test_learner_exports_exclude_other_learners(
+    tmp_path,
+):
+    database_path = (
+        tmp_path
+        / "test_learning.db"
+    )
+
+    initialise_database(
+        database_path=database_path
+    )
+
+    question = {
+        "item_id": "TEST_001",
+        "skill_id": "KC01",
+        "correct_option": "A",
+    }
+
+    for learner_id, session_id in [
+        ("learner_one", "session_one"),
+        ("learner_two", "session_two"),
+    ]:
+        record_interaction(
+            learner_id=learner_id,
+            session_id=session_id,
+            interaction_position=1,
+            question=question,
+            selected_option="A",
+            correct=True,
+            response_time_seconds=4.0,
+            predicted_probability=0.60,
+            mastery_before=0.30,
+            mastery_after=0.70,
+            database_path=database_path,
+        )
+
+    learner_interactions = (
+        load_learner_interactions(
+            learner_id="learner_one",
+            database_path=database_path,
+        )
+    )
+    learner_mastery = (
+        load_learner_mastery_table(
+            learner_id="learner_one",
+            database_path=database_path,
+        )
+    )
+
+    assert len(learner_interactions) == 1
+    assert len(learner_mastery) == 1
+    assert set(
+        learner_interactions["learner_id"]
+    ) == {"learner_one"}
+    assert set(
+        learner_mastery["learner_id"]
+    ) == {"learner_one"}
+
+
+def test_session_history_is_scoped_to_one_session(
+    tmp_path,
+):
+    database_path = (
+        tmp_path
+        / "test_learning.db"
+    )
+
+    initialise_database(
+        database_path=database_path
+    )
+
+    question = {
+        "item_id": "TEST_001",
+        "skill_id": "KC01",
+        "correct_option": "A",
+    }
+
+    for session_id, actual in [
+        ("session_one", True),
+        ("session_two", False),
+    ]:
+        record_interaction(
+            learner_id="learner_one",
+            session_id=session_id,
+            interaction_position=1,
+            question=question,
+            selected_option=(
+                "A" if actual else "B"
+            ),
+            correct=actual,
+            response_time_seconds=4.0,
+            predicted_probability=0.60,
+            mastery_before=0.30,
+            mastery_after=(
+                0.70 if actual else 0.20
+            ),
+            database_path=database_path,
+        )
+
+    session_history = load_session_history(
+        learner_id="learner_one",
+        session_id="session_two",
+        database_path=database_path,
+    )
+
+    assert len(session_history) == 1
+    assert set(
+        session_history["session_id"]
+    ) == {"session_two"}
+    assert session_history["actual"].tolist() == [
+        0
+    ]
