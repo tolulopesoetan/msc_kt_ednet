@@ -1,7 +1,0 @@
-The phase 1 notebook has been extended beyond the BKT baseline to include neural knowledge tracing smoke tests for DKT and SAKT. The notebook now prepares sequence-based data by sorting learner interactions, encoding skills as integer IDs, creating padded learner sequences, and using sample weights so that padded positions do not affect training or evaluation.
-
-A DKT model was implemented using an LSTM-based architecture, while a SAKT-style model was implemented using embedding layers, positional encoding, causal self-attention, residual connections, and feed-forward layers. Both models were trained on the same preprocessed EDNet-KT1 subset and evaluated using manually calculated AUC and accuracy scores.
-
-The notebook now produces a three-model comparison across BKT, DKT, and SAKT. Current smoke-test results show BKT running but producing a weak baseline result, while DKT and SAKT produce stronger AUC and accuracy scores on the small sample. A comparison table and AUC bar chart were added to make the results easier to inspect.
-
-The main technical issues identified are that the BKT baseline needs further debugging because of weak performance and NaN prediction handling. The next step is to rerun the pipeline at a larger smoke-test scale, investigate the BKT baseline, document the current limitations, and prepare the sampling strategy for the Phase 2 training subset.
