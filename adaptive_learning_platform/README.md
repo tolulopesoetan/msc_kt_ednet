@@ -28,6 +28,8 @@ Additional functionality includes:
 - password-protected application-wide exports for an administrator;
 - automated unit tests and an integrated functional-evaluation scorecard.
 
+Note: Generative AI was used to support the creation of the question bank by generating questions aligned with the defined knowledge components and difficulty levels, with all questions reviewed and refined for accuracy and suitability before inclusion.
+
 ## Adaptive logic
 
 ### Question selection
@@ -250,3 +252,5 @@ The current public deployment is available at [sfla-adaptive-learning.streamlit.
 | [`tests/`](tests/) | Unit and integration tests |
 | [`scripts/run_platform_evaluation.py`](scripts/run_platform_evaluation.py) | Integrated 11-check functional scorecard |
 | [`scripts/create_question_bank.py`](scripts/create_question_bank.py) | Deterministic prototype question-bank generator |
+
+Note: AI tools were used to assist with debugging and refining Python code used in this project.

@@ -124,6 +124,7 @@ Raw files, Streamlit secrets, local databases, caches, and virtual environments 
 - The hosted demonstration uses local SQLite storage, which may be reset when the service restarts or is redeployed.
 - Only pseudonymous learner identifiers should be entered into the platform.
 
+Note: AI tools were used to assist with debugging and refining Python code used in this project.
 
 ## Author
 
