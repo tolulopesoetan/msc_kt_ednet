@@ -1969,14 +1969,6 @@ with research_tab:
             disabled=common_evaluation_table.empty,
         )
 
-    st.warning(
-        "Storage notice: this demonstration uses a local "
-        "SQLite database. On Streamlit Community Cloud, "
-        "records may be lost when the application restarts "
-        "or is redeployed. Use a managed database and an "
-        "approved retention process before collecting real "
-        "participant data."
-    )
 
     if "admin_export_unlocked" not in st.session_state:
         st.session_state.admin_export_unlocked = False
